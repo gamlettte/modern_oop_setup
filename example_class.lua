@@ -1,53 +1,50 @@
 ---@class example_class
----@field public_property number
----@field _private_property string
----@field get_private_property function
----@field set_private_property function
-example_class_1 = {
-
-}
+---@field private __index any
+---@field public public_property number
+---@field private _private_property string
+example_class = {}
 
 
----@param pub_number number
+---@param pub_number number to set into storage
 ---@return example_class
 ---@nodiscard
-example_class_1.new = function(pub_number) -- public static method, btw
-    local self = {}
+function example_class:new(pub_number) -- public static method, btw
 
+    setmetatable({}, self)
+    self.__index = self
 
-    ---@type number
     self.public_property = pub_number
 
-
-    ---@private
-    ---@type string
-    local _private_property = "secret"
-
-
-    ---@public
-    ---@return string
-    ---@nodiscard
-    function self.get_private_property()
-        if self.public_property == 32 then
-            return "not private proprety"
-        else
-            return _private_property
-        end
-    end
-
-
-    ---@public
-    ---@param new_property string
-    ---@return nil
-    function self.set_private_property(new_property)
-        _private_property = new_property
-    end
-
-
-    ---@private
-    local function private_function()
-        print("Inside Private Function")
-    end
+    self._private_property = "secret"
 
     return self
+end
+
+
+---@public
+---@return string
+---@nodiscard
+function example_class:get_private_property()
+    assert(self.public_property)
+    assert(self._private_property)
+
+    if self.public_property == 32 then
+        return "not private proprety"
+    else
+        return self._private_property
+    end
+end
+
+
+---@public
+---@param new_property string
+---@return nil
+function example_class:set_private_property(new_property)
+    self._private_property = new_property
+end
+
+
+---@private
+---@return nil
+function example_class:private_function()
 end

@@ -1,13 +1,21 @@
 require("example_class");
 
-local instance = example_class_1.new(42)
+---@type example_class
+local instance = example_class:new(42)
 
--- Prints 42
-print(instance.public_property)
+
+---@type string
 local a = instance:get_private_property()
-print(a)
-instance:set_private_property("hello")
-local b = instance:get_private_property()
-print(a == b)
+assert(a)
 
-print("hello world")
+---@type string
+local test_string = "hello"
+
+instance:set_private_property(test_string)
+
+---@type string
+local b = instance:get_private_property()
+
+assert(a == "secret")
+print(b)
+assert(b == test_string)
